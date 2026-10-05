@@ -30,7 +30,7 @@ jobs:
       - name: Check out the port (same owner)
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/pokemmo-ps5
+          repository: ${{ github.repository_owner }}/PokeMMO-Prospero
           path: port
 
       - name: Smoke test - build the probe title

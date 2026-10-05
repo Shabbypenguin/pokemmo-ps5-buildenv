@@ -86,8 +86,10 @@ boilerplate commit and payload SDK:
 
 ## Taking over
 
-1. Fork or transfer both repositories; keep the names, since the port's CI pulls
-   `ghcr.io/<owner>/pokemmo-ps5-buildenv:latest` from the same owner.
+1. Fork or transfer both repositories (`PokeMMO-Prospero` and `pokemmo-ps5-buildenv`) to the same owner and keep
+   their names: the port's CI pulls `ghcr.io/<owner>/pokemmo-ps5-buildenv:latest`, and the image workflow checks
+   out `<owner>/PokeMMO-Prospero` for its smoke test. If the port repository is private, give that checkout step a
+   token with read access (`token:` input of `actions/checkout`).
 2. Run the buildenv `image` workflow once to publish the image under the new owner, and make the package public
    (GitHub → Packages → package settings) so anyone can pull it.
 3. Build the probe, run it on your console, and record your setup in the tested-combinations table.

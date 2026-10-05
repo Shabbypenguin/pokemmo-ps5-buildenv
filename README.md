@@ -1,6 +1,6 @@
 # pokemmo-ps5-buildenv
 
-Everything needed to build **pokemmo-ps5** (the PokeMMO-on-PS5 port) and to keep the project alive
+Everything needed to build **[PokeMMO-Prospero](https://github.com/Shabbypenguin/PokeMMO-Prospero)** (the PokeMMO-on-PS5 port) and to keep the project alive
 if its maintainer stops: a pinned toolchain image, a wrapper to use it, the console setup it targets, and a
 maintainer's guide.
 
@@ -13,8 +13,8 @@ Needs an x86-64 Linux machine with Docker and about 4 GB of disk.
 
 ```bash
 git clone <this-repo-url> pokemmo-ps5-buildenv
-git clone <port-repo-url> pokemmo-ps5          # side by side
-cd pokemmo-ps5
+git clone https://github.com/Shabbypenguin/PokeMMO-Prospero.git   # side by side
+cd PokeMMO-Prospero
 ../pokemmo-ps5-buildenv/ps5env build           # once, ~10 minutes
 ../pokemmo-ps5-buildenv/ps5env doctor          # checks Docker, the image and the checkout
 ../pokemmo-ps5-buildenv/ps5env make probe      # builds dist/pokemmo-ps5-probe-PPSA27165.zip

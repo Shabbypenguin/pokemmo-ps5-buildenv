@@ -17,10 +17,10 @@ Every download is pinned and checksum-verified, so a failure is a network proble
   and pass the proxy to the build:
   `PS5ENV_DOCKER_FLAGS="--network host --build-arg HTTPS_PROXY=$HTTPS_PROXY" ./ps5env build`.
 
-## `pokemmo-ps5 checkout not found`
+## `PokeMMO-Prospero checkout not found`
 
-`ps5env` looks for the port in `$PORT_DIR`, then the current directory, then `../pokemmo-ps5` next to this
-repository. `cd` into your checkout or set `PORT_DIR`.
+`ps5env` looks for the port in `$PORT_DIR`, then the current directory, then `../PokeMMO-Prospero` (or `../pokemmo-ps5`) next to
+this repository. `cd` into your checkout or set `PORT_DIR`.
 
 ## `Not inside the build environment`
 

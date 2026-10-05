@@ -7,8 +7,8 @@
 #   ps5env shell              interactive shell in the container
 #   ps5env <command...>       run one command, e.g. ps5env make probe
 #
-# The port repository is found in this order: $PORT_DIR, the current directory (if it is a pokemmo-ps5
-# checkout), then ../pokemmo-ps5 next to this repository.
+# The port repository (PokeMMO-Prospero) is found in this order: $PORT_DIR, the current directory (if it is a
+# checkout of it), then ../PokeMMO-Prospero or ../pokemmo-ps5 next to this repository.
 #
 # Environment:
 #   DOCKER               docker command (default "sudo docker"; use "docker" if your user is in the docker group)
@@ -30,10 +30,12 @@ find_port_dir() {
         (cd -- "$PORT_DIR" && pwd)
     elif is_port_repo "$PWD"; then
         pwd
+    elif is_port_repo "$here/../PokeMMO-Prospero"; then
+        (cd -- "$here/../PokeMMO-Prospero" && pwd)
     elif is_port_repo "$here/../pokemmo-ps5"; then
         (cd -- "$here/../pokemmo-ps5" && pwd)
     else
-        echo "pokemmo-ps5 checkout not found: cd into it, clone it next to this repo, or set PORT_DIR" >&2
+        echo "PokeMMO-Prospero checkout not found: cd into it, clone it next to this repo, or set PORT_DIR" >&2
         return 1
     fi
 }
