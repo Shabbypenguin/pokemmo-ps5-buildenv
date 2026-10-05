@@ -30,10 +30,13 @@ Only combinations someone has actually run belong here. Add a row when you confi
 
 ## Installing a title
 
-1. Copy the title folder (for the probe: `PPSA27165/` from `dist/pokemmo-ps5-probe-PPSA27165.zip`) to
-   `/data/homebrew/PPSA27165/`, either with `make deploy-probe PS5_HOST=<console IP>` (FTP) or by hand.
-2. Let your mounting tool pick it up (see its documentation; a refresh may be needed after the first copy).
-3. Launch it from the home screen.
+Use the installer that ships with every release (`install.bat` on Windows, `install.command` on macOS,
+`install.sh` on Linux; details in the port's `installer/README.md`). It asks for the console's FTP address,
+uploads the title to `/data/homebrew/<TITLE_ID>/`, and offers to upload your ROMs to
+`/data/homebrew/<TITLE_ID>/roms/`. Developers can use `make deploy-probe PS5_HOST=<console IP>` instead.
 
-Titles are sandboxed: they write to `/download0` (their own storage, `/user/download/<TITLE_ID>/` over FTP), not
-to `/data`.
+After installing, let your title mounter pick the title up (a refresh may be needed the first time), then launch it
+from the home screen. Close the title before reinstalling it.
+
+Titles are sandboxed. They write only to `/download0`, which is backed by a storage image that FTP cannot
+browse. Logs therefore go out over UDP (`tools/udplog.py` in the port).
