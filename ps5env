@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Build the pokemmo-ps5 toolchain image and run commands in it with the port repository mounted at /work.
+#
+#   ps5env build              build (or rebuild) the image from docker/Dockerfile
+#   ps5env doctor             check Docker, the image and the port checkout; print the pinned versions
+#   ps5env shell              interactive shell in the container
+#   ps5env <command...>       run one command, e.g. ps5env make probe
+#
+# The port repository is found in this order: $PORT_DIR, the current directory (if it is a pokemmo-ps5
+# checkout), then ../pokemmo-ps5 next to this repository.
+#
+# Environment:
+#   DOCKER               docker command (default "sudo docker"; use "docker" if your user is in the docker group)
+#   PS5ENV_IMAGE         image name (default pokemmo-ps5-buildenv:latest; or ghcr.io/<owner>/pokemmo-ps5-buildenv:latest)
+#   PS5ENV_DOCKER_FLAGS  extra flags for docker build/run (e.g. "--network host" behind a proxy)
+#   PORT_DIR             path to the pokemmo-ps5 checkout
+set -euo pipefail
+
+here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+image=${PS5ENV_IMAGE:-pokemmo-ps5-buildenv:latest}
+read -r -a docker_cmd <<<"${DOCKER:-sudo docker}"
+read -r -a extra <<<"${PS5ENV_DOCKER_FLAGS:-}"
+
+is_port_repo() { [[ -f $1/scripts/build-title.sh && -f $1/CREDITS.md ]]; }
+
+find_port_dir() {
+    if [[ -n ${PORT_DIR:-} ]]; then
+        is_port_repo "$PORT_DIR" || { echo "PORT_DIR=$PORT_DIR is not a pokemmo-ps5 checkout" >&2; return 1; }
+        (cd -- "$PORT_DIR" && pwd)
+    elif is_port_repo "$PWD"; then
+        pwd
+    elif is_port_repo "$here/../pokemmo-ps5"; then
+        (cd -- "$here/../pokemmo-ps5" && pwd)
+    else
+        echo "pokemmo-ps5 checkout not found: cd into it, clone it next to this repo, or set PORT_DIR" >&2
+        return 1
+    fi
+}
+
+case "${1:-shell}" in
+    build)
+        exec "${docker_cmd[@]}" build "${extra[@]}" -t "$image" -f "$here/docker/Dockerfile" "$here"
+        ;;
+    doctor)
+        status=0
+        "${docker_cmd[@]}" version --format 'docker: client {{.Client.Version}}, server {{.Server.Version}}' || status=1
+        if "${docker_cmd[@]}" image inspect "$image" >/dev/null 2>&1; then
+            echo "image: $image present"
+        else
+            echo "image: $image missing (run: ps5env build)"
+            status=1
+        fi
+        if port=$(find_port_dir); then
+            echo "port repo: $port ($(git -C "$port" rev-parse --short HEAD 2>/dev/null || echo 'not a git checkout'))"
+        else
+            status=1
+        fi
+        echo "pins (docker/Dockerfile):"
+        grep -E '^ARG [A-Z_]+=' "$here/docker/Dockerfile" | sed 's/^ARG /  /'
+        exit $status
+        ;;
+    shell)
+        port=$(find_port_dir)
+        exec "${docker_cmd[@]}" run --rm -it "${extra[@]}" -v "$port:/work" -w /work "$image" bash
+        ;;
+    *)
+        port=$(find_port_dir)
+        tty_flag=()
+        [[ -t 0 && -t 1 ]] && tty_flag=(-it)
+        exec "${docker_cmd[@]}" run --rm "${tty_flag[@]}" "${extra[@]}" \
+            --user "$(id -u):$(id -g)" -e HOME=/work/.home \
+            -v "$port:/work" -w /work "$image" "$@"
+        ;;
+esac

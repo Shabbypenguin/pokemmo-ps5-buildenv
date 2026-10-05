@@ -1,0 +1,50 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Builds the toolchain image, proves it by building the port's probe title, and publishes it to
+# ghcr.io/<owner>/pokemmo-ps5-buildenv on the default branch. A monthly rebuild catches upstream downloads that
+# disappear (every download is pinned and checksum-verified, so a rebuild never changes versions silently).
+name: image
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 1 * *"
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/pokemmo-ps5-buildenv
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t "$IMAGE:ci" -f docker/Dockerfile .
+
+      - name: Check out the port (same owner)
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/pokemmo-ps5
+          path: port
+
+      - name: Smoke test - build the probe title
+        run: |
+          set -euo pipefail
+          docker run --rm -v "$PWD/port:/work" -w /work "$IMAGE:ci" make probe
+          test -s port/dist/pokemmo-ps5-probe-PPSA27165.zip
+
+      - name: Publish
+        if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        run: |
+          set -euo pipefail
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag "$IMAGE:ci" "$IMAGE:latest"
+          docker tag "$IMAGE:ci" "$IMAGE:sha-${GITHUB_SHA::12}"
+          docker push "$IMAGE:latest"
+          docker push "$IMAGE:sha-${GITHUB_SHA::12}"
