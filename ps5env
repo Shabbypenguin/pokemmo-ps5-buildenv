@@ -57,7 +57,7 @@ case "${1:-shell}" in
             status=1
         fi
         echo "pins (docker/Dockerfile):"
-        grep -E '^ARG [A-Z_]+=' "$here/docker/Dockerfile" | sed 's/^ARG /  /'
+        grep -E '^ARG [A-Z0-9_]+=' "$here/docker/Dockerfile" | grep -v DEBIAN_FRONTEND | sed 's/^ARG /  /'
         exit $status
         ;;
     shell)
