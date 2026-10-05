@@ -1,12 +1,12 @@
 # Maintainer's guide
 
-For whoever keeps pokemmo-ps5 going next. Nothing here needs secrets or keys: everything is public, pinned and
-rebuildable.
+For whoever keeps PokeMMO-Prospero going next. Everything is pinned and rebuildable; the only secret is a read-only
+token CI needs while the port repository is private (see [CI access](#ci-access)).
 
 ## How the pieces fit
 
 ```
-pokemmo-ps5-buildenv (this repo)          pokemmo-ps5 (the port)
+pokemmo-ps5-buildenv (this repo)          PokeMMO-Prospero (the port)
   docker/Dockerfile  ── builds ──▶ image    probe/, loader/ (Phase 2), tools/, docs/
   ps5env             ── runs the image with the port checkout mounted at /work
                                             scripts/build-title.sh
@@ -44,7 +44,7 @@ Commit the updated `tools/client-baseline.txt` together with the loader change a
 
 ### A new console firmware or jailbreak chain
 
-Run the probe on it (see `docs/probe.md` in the pokemmo-ps5 repository) and add a row to
+Run the probe on it (see `docs/probe.md` in the PokeMMO-Prospero repository) and add a row to
 [console-setup.md](console-setup.md#tested-combinations) and to the port's `docs/plan.md` hardware table, with
 the log attached to the commit or an issue.
 
@@ -84,12 +84,30 @@ boilerplate commit and payload SDK:
 - **Honesty.** "Works" means someone ran it on a console and recorded the result. Untested firmware stays marked untested.
 - **AI assistance.** Commits written with AI help carry a `Co-Authored-By` trailer.
 
+## CI access
+
+The image workflow (this repo) builds the port's probe as a smoke test, and the port's workflow pulls the image.
+While PokeMMO-Prospero is private, two grants are needed:
+
+1. **Reading the port from this repo's workflow: secret `PROSPERO_READ_TOKEN`.**
+   GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token.
+   Resource owner: the account that owns both repos. Repository access: *Only select repositories* →
+   PokeMMO-Prospero. Permissions → Repository permissions → **Contents: Read-only** (Metadata: Read-only is added
+   automatically). Pick an expiration and note it. Then in **this** repo: Settings → Secrets and variables →
+   Actions → New repository secret, name `PROSPERO_READ_TOKEN`, paste the token.
+   When it expires the smoke test fails at "Check out the port"; generate a new one and replace the secret.
+2. **Pulling the image from the port's workflow: package access.** After the image workflow has published once:
+   your profile → Packages → `pokemmo-ps5-buildenv` → Package settings → Manage Actions access → Add repository →
+   PokeMMO-Prospero, role **Read**. (Or make the package public, which also lets anyone use the prebuilt image.)
+
+When the port goes public: delete the secret (the built-in token then reads it) and make the package public.
+
 ## Taking over
 
 1. Fork or transfer both repositories (`PokeMMO-Prospero` and `pokemmo-ps5-buildenv`) to the same owner and keep
    their names: the port's CI pulls `ghcr.io/<owner>/pokemmo-ps5-buildenv:latest`, and the image workflow checks
-   out `<owner>/PokeMMO-Prospero` for its smoke test. If the port repository is private, give that checkout step a
-   token with read access (`token:` input of `actions/checkout`).
+   out `<owner>/PokeMMO-Prospero` for its smoke test. If the port repository is private, set up
+   [CI access](#ci-access) under the new owner.
 2. Run the buildenv `image` workflow once to publish the image under the new owner, and make the package public
    (GitHub → Packages → package settings) so anyone can pull it.
 3. Build the probe, run it on your console, and record your setup in the tested-combinations table.

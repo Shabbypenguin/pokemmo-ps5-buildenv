@@ -19,7 +19,7 @@ Every download is pinned and checksum-verified, so a failure is a network proble
 
 ## `PokeMMO-Prospero checkout not found`
 
-`ps5env` looks for the port in `$PORT_DIR`, then the current directory, then `../PokeMMO-Prospero` (or `../pokemmo-ps5`) next to
+`ps5env` looks for the port in `$PORT_DIR`, then the current directory, then `../PokeMMO-Prospero` (or `../pokemmo-prospero`) next to
 this repository. `cd` into your checkout or set `PORT_DIR`.
 
 ## `Not inside the build environment`

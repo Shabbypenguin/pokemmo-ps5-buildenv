@@ -17,7 +17,7 @@ git clone https://github.com/Shabbypenguin/PokeMMO-Prospero.git   # side by side
 cd PokeMMO-Prospero
 ../pokemmo-ps5-buildenv/ps5env build           # once, ~10 minutes
 ../pokemmo-ps5-buildenv/ps5env doctor          # checks Docker, the image and the checkout
-../pokemmo-ps5-buildenv/ps5env make probe      # builds dist/pokemmo-ps5-probe-PPSA27165.zip
+../pokemmo-ps5-buildenv/ps5env make probe      # builds dist/pokemmo-prospero-probe-PPSA27165.zip
 ```
 
 `ps5env` runs `sudo docker` by default. If your user is in the `docker` group: `export DOCKER=docker`.

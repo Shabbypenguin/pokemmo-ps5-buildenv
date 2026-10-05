@@ -26,7 +26,7 @@ Only combinations someone has actually run belong here. Add a row when you confi
 |----------|-------|----------|--------|-------------|
 | 6.02, 12.70 | ShadowMountPlus, ftpsrv | boilerplate hello world (upstream's own testing) | works | boilerplate docs |
 | 6.02 | — | ps5-opengl examples (upstream's own testing) | works | ps5-opengl docs |
-| 12.40 | kstuff-lite | pokemmo-ps5 probe | **not run yet** | — |
+| 12.40 | kstuff-lite | PokeMMO-Prospero probe | **not run yet** | — |
 
 ## Installing a title
 

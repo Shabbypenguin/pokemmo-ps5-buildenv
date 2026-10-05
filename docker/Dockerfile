@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-# pokemmo-ps5 build environment image.
+# PokeMMO-Prospero build environment image.
 #
 # Everything is pinned (commit or SHA-256) so a build today and a build in six
 # months produce the same toolchain. Bump the ARGs deliberately, never silently.
@@ -13,7 +13,7 @@
 FROM ubuntu:24.04
 
 LABEL org.opencontainers.image.title="pokemmo-ps5-buildenv" \
-      org.opencontainers.image.description="Pinned toolchain for building pokemmo-ps5 PS5 titles" \
+      org.opencontainers.image.description="Pinned toolchain for building PokeMMO-Prospero PS5 titles" \
       org.opencontainers.image.licenses="GPL-3.0-or-later"
 
 ARG DEBIAN_FRONTEND=noninteractive

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Build the pokemmo-ps5 toolchain image and run commands in it with the port repository mounted at /work.
+# Build the PokeMMO-Prospero toolchain image and run commands in it with the port repository mounted at /work.
 #
 #   ps5env build              build (or rebuild) the image from docker/Dockerfile
 #   ps5env doctor             check Docker, the image and the port checkout; print the pinned versions
@@ -8,13 +8,13 @@
 #   ps5env <command...>       run one command, e.g. ps5env make probe
 #
 # The port repository (PokeMMO-Prospero) is found in this order: $PORT_DIR, the current directory (if it is a
-# checkout of it), then ../PokeMMO-Prospero or ../pokemmo-ps5 next to this repository.
+# checkout of it), then ../PokeMMO-Prospero or ../pokemmo-prospero next to this repository.
 #
 # Environment:
 #   DOCKER               docker command (default "sudo docker"; use "docker" if your user is in the docker group)
 #   PS5ENV_IMAGE         image name (default pokemmo-ps5-buildenv:latest; or ghcr.io/<owner>/pokemmo-ps5-buildenv:latest)
 #   PS5ENV_DOCKER_FLAGS  extra flags for docker build/run (e.g. "--network host" behind a proxy)
-#   PORT_DIR             path to the pokemmo-ps5 checkout
+#   PORT_DIR             path to the PokeMMO-Prospero checkout
 set -euo pipefail
 
 here=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
@@ -26,14 +26,14 @@ is_port_repo() { [[ -f $1/scripts/build-title.sh && -f $1/CREDITS.md ]]; }
 
 find_port_dir() {
     if [[ -n ${PORT_DIR:-} ]]; then
-        is_port_repo "$PORT_DIR" || { echo "PORT_DIR=$PORT_DIR is not a pokemmo-ps5 checkout" >&2; return 1; }
+        is_port_repo "$PORT_DIR" || { echo "PORT_DIR=$PORT_DIR is not a PokeMMO-Prospero checkout" >&2; return 1; }
         (cd -- "$PORT_DIR" && pwd)
     elif is_port_repo "$PWD"; then
         pwd
     elif is_port_repo "$here/../PokeMMO-Prospero"; then
         (cd -- "$here/../PokeMMO-Prospero" && pwd)
-    elif is_port_repo "$here/../pokemmo-ps5"; then
-        (cd -- "$here/../pokemmo-ps5" && pwd)
+    elif is_port_repo "$here/../pokemmo-prospero"; then
+        (cd -- "$here/../pokemmo-prospero" && pwd)
     else
         echo "PokeMMO-Prospero checkout not found: cd into it, clone it next to this repo, or set PORT_DIR" >&2
         return 1
