@@ -12,7 +12,7 @@
 #
 # Environment:
 #   DOCKER               docker command (default "sudo docker"; use "docker" if your user is in the docker group)
-#   PS5ENV_IMAGE         image name (default pokemmo-ps5-buildenv:latest; or ghcr.io/<owner>/pokemmo-ps5-buildenv:latest)
+#   PS5ENV_IMAGE         image name (default pokemmo-ps5-buildenv:latest; or ghcr.io/<owner-lowercase>/pokemmo-ps5-buildenv:latest)
 #   PS5ENV_DOCKER_FLAGS  extra flags for docker build/run (e.g. "--network host" behind a proxy)
 #   PORT_DIR             path to the PokeMMO-Prospero checkout
 set -euo pipefail

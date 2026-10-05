@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Builds the toolchain image, proves it by building the port's probe title, and publishes it to
-# ghcr.io/<owner>/pokemmo-ps5-buildenv on the default branch. A monthly rebuild catches upstream downloads that
+# ghcr.io/<owner-lowercase>/pokemmo-ps5-buildenv on the default branch. A monthly rebuild catches upstream downloads that
 # disappear (every download is pinned and checksum-verified, so a rebuild never changes versions silently).
 name: image
 
@@ -15,14 +15,17 @@ permissions:
   contents: read
   packages: write
 
-env:
-  IMAGE: ghcr.io/${{ github.repository_owner }}/pokemmo-ps5-buildenv
-
 jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+
+      # Registry names must be lowercase; the owner name may not be (Shabbypenguin).
+      - name: Image name
+        run: echo "IMAGE=ghcr.io/${OWNER,,}/pokemmo-ps5-buildenv" >> "$GITHUB_ENV"
+        env:
+          OWNER: ${{ github.repository_owner }}
 
       - name: Build image
         run: docker build -t "$IMAGE:ci" -f docker/Dockerfile .

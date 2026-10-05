@@ -21,8 +21,8 @@ cd PokeMMO-Prospero
 ```
 
 `ps5env` runs `sudo docker` by default. If your user is in the `docker` group: `export DOCKER=docker`.
-A prebuilt image is published by CI as `ghcr.io/<owner>/pokemmo-ps5-buildenv:latest`; use it with
-`export PS5ENV_IMAGE=ghcr.io/<owner>/pokemmo-ps5-buildenv:latest` and skip `ps5env build`.
+A prebuilt image is published by CI as `ghcr.io/<owner-lowercase>/pokemmo-ps5-buildenv:latest`; use it with
+`export PS5ENV_IMAGE=ghcr.io/<owner-lowercase>/pokemmo-ps5-buildenv:latest` and skip `ps5env build`.
 
 ## What's in the image
 
