@@ -12,7 +12,7 @@ the same compilers and SDKs.
 Needs an x86-64 Linux machine with Docker and about 4 GB of disk.
 
 ```bash
-git clone <this-repo-url> pokemmo-ps5-buildenv
+git clone https://github.com/Shabbypenguin/pokemmo-ps5-buildenv.git
 git clone https://github.com/Shabbypenguin/PokeMMO-Prospero.git   # side by side
 cd PokeMMO-Prospero
 ../pokemmo-ps5-buildenv/ps5env build           # once, ~10 minutes
