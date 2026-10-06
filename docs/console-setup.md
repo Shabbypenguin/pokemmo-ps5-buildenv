@@ -26,7 +26,8 @@ Only combinations someone has actually run belong here. Add a row when you confi
 |----------|-------|----------|--------|-------------|
 | 6.02, 12.70 | ShadowMountPlus, ftpsrv | boilerplate hello world (upstream's own testing) | works | boilerplate docs |
 | 6.02 | — | ps5-opengl examples (upstream's own testing) | works | ps5-opengl docs |
-| 12.40 | kstuff-lite 1.07+, ShadowMountPlus 1.7beta3, ftpsrv | PokeMMO-Prospero probe-2 | title launches; graphics, threads, direct memory pass; crashed in `getaddrinfo` (fixed in probe-3) | maintainer, 2026-10-05 |
+| 12.40 | kstuff-lite 1.07+, ShadowMountPlus 1.7beta3, ftpsrv | PokeMMO-Prospero probe-2 | title launches; graphics, threads, direct memory pass; crashed in `getaddrinfo` | maintainer, 2026-10-05 |
+| 12.40 | same | PokeMMO-Prospero probe-3 | 20 pass / 7 fail / 4 info; one `getaddrinfo` crash, completed on relaunch | maintainer, 2026-10-05 |
 
 ## Installing a title
 
@@ -37,6 +38,11 @@ uploads the title to `/data/homebrew/<TITLE_ID>/`, and offers to upload your ROM
 
 After installing, let your title mounter pick the title up, then launch it from the home screen. Close the title
 before reinstalling it.
+
+**Reinstalling (ShadowMountPlus):** SMP runs titles from its own copy on a virtual drive, so uploading a new build
+over FTP does not replace what launches. Delete the title from the home screen, then wait for SMP to add it
+again from `/data/homebrew/<TITLE_ID>/` (the uploaded folder and ROMs stay in place). Expect the title's `/download0`
+storage to be wiped by the delete.
 
 **Close every running game or app first.** ShadowMountPlus pauses all scanning while any game or app is running
 (its log shows `[GAME] started: <ID>` and then no more scan lines), so a newly installed title only appears once

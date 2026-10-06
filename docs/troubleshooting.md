@@ -47,3 +47,8 @@ That's the console environment, not the build:
    `[SKIP]` line says why it was rejected.
 
 See [console-setup.md](console-setup.md).
+
+## A reinstalled title still runs the old build
+
+ShadowMountPlus launches its own copy of the title. Delete the title from the home screen and let SMP add it again
+(see [console-setup.md, Reinstalling](console-setup.md#installing-a-title)). The first log line names the build.
