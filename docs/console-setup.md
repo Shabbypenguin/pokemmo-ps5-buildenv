@@ -26,7 +26,7 @@ Only combinations someone has actually run belong here. Add a row when you confi
 |----------|-------|----------|--------|-------------|
 | 6.02, 12.70 | ShadowMountPlus, ftpsrv | boilerplate hello world (upstream's own testing) | works | boilerplate docs |
 | 6.02 | — | ps5-opengl examples (upstream's own testing) | works | ps5-opengl docs |
-| 12.40 | kstuff-lite | PokeMMO-Prospero probe | **not run yet** | — |
+| 12.40 | kstuff-lite 1.07+, ShadowMountPlus 1.7beta3, ftpsrv | PokeMMO-Prospero probe-2 | title launches; graphics, threads, direct memory pass; crashed in `getaddrinfo` (fixed in probe-3) | maintainer, 2026-10-05 |
 
 ## Installing a title
 
@@ -35,8 +35,13 @@ Use the installer that ships with every release (`install.bat` on Windows, `inst
 uploads the title to `/data/homebrew/<TITLE_ID>/`, and offers to upload your ROMs to
 `/data/homebrew/<TITLE_ID>/roms/`. Developers can use `make deploy-probe PS5_HOST=<console IP>` instead.
 
-After installing, let your title mounter pick the title up (a refresh may be needed the first time), then launch it
-from the home screen. Close the title before reinstalling it.
+After installing, let your title mounter pick the title up, then launch it from the home screen. Close the title
+before reinstalling it.
+
+**Close every running game or app first.** ShadowMountPlus pauses all scanning while any game or app is running
+(its log shows `[GAME] started: <ID>` and then no more scan lines), so a newly installed title only appears once
+nothing is running. It rescans every 15 seconds and ignores folders changed in the last 10 seconds. Its log is
+`/data/shadowmount/debug.log`; a title it can see but rejects shows up there as `[SKIP] ...`.
 
 Titles are sandboxed. They write only to `/download0`, which is backed by a storage image that FTP cannot
 browse. Logs therefore go out over UDP (`tools/udplog.py` in the port).

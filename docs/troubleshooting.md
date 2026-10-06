@@ -38,5 +38,12 @@ The pinned boilerplate was changed without updating `scripts/build-title.sh`. Se
 
 ## The title doesn't appear or won't launch on the console
 
-That's the console environment, not the build. Check [console-setup.md](console-setup.md), and that `eboot.bin`,
-`sce_module/libc.prx` and `sce_sys/param.json` all exist in `/data/homebrew/<TITLE_ID>/`.
+That's the console environment, not the build:
+
+1. Check that `eboot.bin`, `sce_module/libc.prx` and `sce_sys/param.json` all exist directly in
+   `/data/homebrew/<TITLE_ID>/` (not one folder deeper: ShadowMountPlus scans one level by default).
+2. **Close any running game or app.** ShadowMountPlus doesn't scan while one is running.
+3. Read `/data/shadowmount/debug.log`: no mention of the title means it was never scanned (step 1 or 2); a
+   `[SKIP]` line says why it was rejected.
+
+See [console-setup.md](console-setup.md).
