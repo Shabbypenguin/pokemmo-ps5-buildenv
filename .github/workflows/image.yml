@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Builds the toolchain image, proves it by building the port's probe title, and publishes it to
+# Builds the toolchain image, proves it by building the port's title, and publishes it to
 # ghcr.io/<owner-lowercase>/pokemmo-ps5-buildenv on the default branch. A monthly rebuild catches upstream downloads that
 # disappear (every download is pinned and checksum-verified, so a rebuild never changes versions silently).
 name: image
@@ -40,11 +40,12 @@ jobs:
           token: ${{ secrets.PROSPERO_READ_TOKEN || github.token }}
           path: port
 
-      - name: Smoke test - build the probe title
+      - name: Smoke test - build the title and its image
         run: |
           set -euo pipefail
-          docker run --rm -v "$PWD/port:/work" -w /work "$IMAGE:ci" make probe
-          test -s port/dist/pokemmo-prospero-probe-PPSA27165.zip
+          docker run --rm -v "$PWD/port:/work" -w /work "$IMAGE:ci" bash -c "make loader && make image-loader"
+          test -s port/dist/pokemmo-prospero-loader-PPSA98001.zip
+          test -s port/dist/PPSA98001.ffpfsc
 
       - name: Publish
         if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)

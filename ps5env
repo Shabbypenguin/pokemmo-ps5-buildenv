@@ -5,7 +5,7 @@
 #   ps5env build              build (or rebuild) the image from docker/Dockerfile
 #   ps5env doctor             check Docker, the image and the port checkout; print the pinned versions
 #   ps5env shell              interactive shell in the container
-#   ps5env <command...>       run one command, e.g. ps5env make probe
+#   ps5env <command...>       run one command, e.g. ps5env make loader
 #
 # The port repository (PokeMMO-Prospero) is found in this order: $PORT_DIR, the current directory (if it is a
 # checkout of it), then ../PokeMMO-Prospero or ../pokemmo-prospero next to this repository.

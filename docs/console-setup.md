@@ -13,14 +13,14 @@ each project's own documentation for that.
 | Kernel exploit / homebrew enabler for your firmware | your jailbreak chain | outside this project's scope |
 | Running fake-signed (FSELF) titles | [kstuff-lite](https://github.com/EchoStretch/kstuff-lite) | what the maintainer uses |
 | Mounting and registering folder titles from `/data/homebrew` | [ShadowMountPlus](https://github.com/drakmor/ShadowMountPlus) | the loader the boilerplate validated with |
-| Uploading titles | an FTP server such as [ftpsrv](https://github.com/ps5-payload-dev/ftpsrv) (port 2121) | `make deploy-probe` uses it |
+| Uploading titles | an FTP server such as [ftpsrv](https://github.com/ps5-payload-dev/ftpsrv) (port 2121) | the installer uses it for folder installs |
 | Loading ELF payloads (port 9021) | e.g. [elfldr](https://github.com/ps5-payload-dev/elfldr) | not needed by the titles today |
 
 Other homebrew environments (for example etaHEN) may also work but are untested with these titles.
 
 ## Tested combinations
 
-Only combinations someone has actually run belong here. Add a row when you confirm one, with the probe log.
+Only combinations someone has actually run belong here. Add a row when you confirm one, with the title's log (`prospero.log`).
 
 | Firmware | Setup | What ran | Result | Reported by |
 |----------|-------|----------|--------|-------------|
@@ -28,13 +28,14 @@ Only combinations someone has actually run belong here. Add a row when you confi
 | 6.02 | — | ps5-opengl examples (upstream's own testing) | works | ps5-opengl docs |
 | 12.40 | kstuff-lite 1.07+, ShadowMountPlus 1.7beta3, ftpsrv | PokeMMO-Prospero probe-2 | title launches; graphics, threads, direct memory pass; crashed in `getaddrinfo` | maintainer, 2026-10-05 |
 | 12.40 | same | PokeMMO-Prospero probe-3 | 20 pass / 7 fail / 4 info; one `getaddrinfo` crash, completed on relaunch | maintainer, 2026-10-05 |
+| 12.40 | same | PokeMMO-Prospero loader-25 (`.ffpfsc` image) | login and play; client download and update; ROM upload over web and FTP; data kept across reboots | maintainer, 2026-10-06 |
 
 ## Installing a title
 
 Use the installer that ships with every release (`install.bat` on Windows, `install.command` on macOS,
 `install.sh` on Linux; details in the port's `installer/README.md`). It asks for the console's FTP address,
 uploads the title to `/data/homebrew/<TITLE_ID>/`, and offers to upload your ROMs to
-`/data/homebrew/<TITLE_ID>/roms/`. Developers can use `make deploy-probe PS5_HOST=<console IP>` instead.
+`/data/homebrew/<TITLE_ID>/roms/`.
 
 After installing, let your title mounter pick the title up, then launch it from the home screen. Close the title
 before reinstalling it.

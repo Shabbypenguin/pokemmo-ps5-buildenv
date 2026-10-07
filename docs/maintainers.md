@@ -7,7 +7,7 @@ token CI needs while the port repository is private (see [CI access](#ci-access)
 
 ```
 pokemmo-ps5-buildenv (this repo)          PokeMMO-Prospero (the port)
-  docker/Dockerfile  ── builds ──▶ image    probe/, loader/ (Phase 2), tools/, docs/
+  docker/Dockerfile  ── builds ──▶ image    loader/, installer/, tools/, docs/
   ps5env             ── runs the image with the port checkout mounted at /work
                                             scripts/build-title.sh
                                               ├─ copies the boilerplate's build system   (/opt/ps5/boilerplate)
@@ -19,7 +19,8 @@ pokemmo-ps5-buildenv (this repo)          PokeMMO-Prospero (the port)
 The image exports the paths as `PS5_NATIVE_APP_TEMPLATE`, `PS5_PAYLOAD_SDK`, `PS5_OPENGL_PREFIX`,
 `PS5_OPENGL_SOURCE` and `PS5_CLANG`. The port's Makefile refuses to run outside the image (`env-check`).
 
-Title IDs: `PPSA27165` is the probe. `PPSA27166` is reserved for the game title. Keep them stable: changing a
+Title ID: `PPSA98001` (`LOADER_TITLE_ID` in the port's Makefile; `PPSA27165` and `PPSA27166` were the retired probe and early
+builds). Keep it stable: changing a
 title ID makes the console treat it as a different application with separate storage.
 
 ## Routine tasks
@@ -44,7 +45,7 @@ Commit the updated `tools/client-baseline.txt` together with the loader change a
 
 ### A new console firmware or jailbreak chain
 
-Run the probe on it (see `docs/probe.md` in the PokeMMO-Prospero repository) and add a row to
+Run the title on it (hold Triangle on the loading screen for the startup checks) and add a row to
 [console-setup.md](console-setup.md#tested-combinations) and to the port's `docs/plan.md` hardware table, with
 the log attached to the commit or an issue.
 
@@ -61,12 +62,12 @@ boilerplate commit and payload SDK:
    The payload SDK version and hash are pinned inside the boilerplate's `tools/setup-native-dependencies.sh`, so they
    follow the boilerplate commit. Check that its zlib version still matches the pre-seeded
    `zlib-1.3.2.tar.gz` line in the Dockerfile.
-3. `ps5env build`, then `ps5env make probe` in the port. `scripts/build-title.sh` patches two spots in the
+3. `ps5env build`, then `ps5env make loader` in the port. `scripts/build-title.sh` patches two spots in the
    boilerplate (the process heap size line and the `--eh-frame-hdr` link line) and copies files from ps5-opengl's
    `native-app/`. If upstream changed those, the script stops with "boilerplate heap hook changed" or "boilerplate
    link step changed". Compare against ps5-opengl's own `tools/build-native-test-app.sh` at the new release and
    mirror what it does.
-4. Run the probe on a console before calling the new pins good. A CI build only proves it compiles.
+4. Run the title on a console before calling the new pins good. A CI build only proves it compiles.
 5. Commit with the versions in the message, e.g. `pins: ps5-opengl 1.0.1 -> 1.1.0, boilerplate 4f531c4b -> …`.
 
 ## Releases
@@ -86,7 +87,7 @@ boilerplate commit and payload SDK:
 
 ## CI access
 
-The image workflow (this repo) builds the port's probe as a smoke test, and the port's workflow pulls the image.
+The image workflow (this repo) builds the port's title as a smoke test, and the port's workflow pulls the image.
 While PokeMMO-Prospero is private, two grants are needed:
 
 1. **Reading the port from this repo's workflow: secret `PROSPERO_READ_TOKEN`.**
@@ -110,4 +111,4 @@ When the port goes public: delete the secret (the built-in token then reads it) 
    [CI access](#ci-access) under the new owner.
 2. Run the buildenv `image` workflow once to publish the image under the new owner, and make the package public
    (GitHub → Packages → package settings) so anyone can pull it.
-3. Build the probe, run it on your console, and record your setup in the tested-combinations table.
+3. Build the title, run it on your console, and record your setup in the tested-combinations table.

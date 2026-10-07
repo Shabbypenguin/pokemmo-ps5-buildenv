@@ -24,7 +24,7 @@ this repository. `cd` into your checkout or set `PORT_DIR`.
 
 ## `Not inside the build environment`
 
-Run port Makefile targets through the wrapper: `../pokemmo-ps5-buildenv/ps5env make probe`, not plain `make probe`.
+Run port Makefile targets through the wrapper: `../pokemmo-ps5-buildenv/ps5env make loader`, not plain `make loader`.
 
 ## Files in the port checkout are owned by root
 
