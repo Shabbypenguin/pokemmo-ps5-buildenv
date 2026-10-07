@@ -17,7 +17,7 @@ git clone https://github.com/Shabbypenguin/PokeMMO-Prospero.git   # side by side
 cd PokeMMO-Prospero
 ../pokemmo-ps5-buildenv/ps5env build           # once, ~10 minutes
 ../pokemmo-ps5-buildenv/ps5env doctor          # checks Docker, the image and the checkout
-../pokemmo-ps5-buildenv/ps5env make package-loader   # dist/pokemmo-prospero-loader-installer.zip
+../pokemmo-ps5-buildenv/ps5env make loader           # dist/pokemmo-prospero-loader-PPSA98001.zip (folder title)
 ../pokemmo-ps5-buildenv/ps5env make image-loader     # dist/PPSA98001.ffpfsc
 ```
 

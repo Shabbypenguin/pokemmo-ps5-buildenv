@@ -13,7 +13,7 @@ each project's own documentation for that.
 | Kernel exploit / homebrew enabler for your firmware | your jailbreak chain | outside this project's scope |
 | Running fake-signed (FSELF) titles | [kstuff-lite](https://github.com/EchoStretch/kstuff-lite) | what the maintainer uses |
 | Mounting and registering folder titles from `/data/homebrew` | [ShadowMountPlus](https://github.com/drakmor/ShadowMountPlus) | the loader the boilerplate validated with |
-| Uploading titles | an FTP server such as [ftpsrv](https://github.com/ps5-payload-dev/ftpsrv) (port 2121) | the installer uses it for folder installs |
+| Uploading titles | an FTP server such as [ftpsrv](https://github.com/ps5-payload-dev/ftpsrv) (port 2121) | copying folder titles (developers) |
 | Loading ELF payloads (port 9021) | e.g. [elfldr](https://github.com/ps5-payload-dev/elfldr) | not needed by the titles today |
 
 Other homebrew environments (for example etaHEN) may also work but are untested with these titles.
@@ -32,13 +32,11 @@ Only combinations someone has actually run belong here. Add a row when you confi
 
 ## Installing a title
 
-Use the installer that ships with every release (`install.bat` on Windows, `install.command` on macOS,
-`install.sh` on Linux; details in the port's `installer/README.md`). It asks for the console's FTP address,
-uploads the title to `/data/homebrew/<TITLE_ID>/`, and offers to upload your ROMs to
-`/data/homebrew/<TITLE_ID>/roms/`.
+Releases ship one image, `PPSA98001.ffpfsc`: install it with ShadowMountPlus or a homebrew store, then launch it from
+the home screen. The title downloads the PokeMMO client itself and takes ROMs over its own web page or FTP server.
 
-After installing, let your title mounter pick the title up, then launch it from the home screen. Close the title
-before reinstalling it.
+Developers can also unzip the folder title (`make loader`) into `/data/homebrew/` with an FTP payload and let the title
+mounter pick it up. Close the title before reinstalling it.
 
 **Reinstalling (ShadowMountPlus):** SMP runs titles from its own copy on a virtual drive, so uploading a new build
 over FTP does not replace what launches. Delete the title from the home screen, then wait for SMP to add it

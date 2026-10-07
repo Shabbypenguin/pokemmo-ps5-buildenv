@@ -7,7 +7,7 @@ token CI needs while the port repository is private (see [CI access](#ci-access)
 
 ```
 pokemmo-ps5-buildenv (this repo)          PokeMMO-Prospero (the port)
-  docker/Dockerfile  ── builds ──▶ image    loader/, installer/, tools/, docs/
+  docker/Dockerfile  ── builds ──▶ image    loader/, tools/, docs/
   ps5env             ── runs the image with the port checkout mounted at /work
                                             scripts/build-title.sh
                                               ├─ copies the boilerplate's build system   (/opt/ps5/boilerplate)
