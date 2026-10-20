@@ -30,8 +30,8 @@ A prebuilt image is published by CI as `ghcr.io/<owner-lowercase>/pokemmo-ps5-bu
 | Path | Component | Pin |
 |------|-----------|-----|
 | `/opt/ps5/payload-sdk` | [ps5-payload-sdk](https://github.com/ps5-payload-dev/sdk) | v0.42 (SHA-256 checked by the boilerplate) |
-| `/opt/ps5/boilerplate` | [ps5-native-app-boilerplate](https://github.com/blackbearreloaded/ps5-native-app-boilerplate) | commit `4f531c4b` |
-| `/opt/ps5/opengl` | [ps5-opengl](https://github.com/blackbearreloaded/ps5-opengl) SDK | 1.0.1 (SHA-256 pinned) |
+| `/opt/ps5/boilerplate` | ps5-native-app-boilerplate (upstream gone; unmodified git bundle in `docker/mirror/`) | commit `4f531c4b` |
+| `/opt/ps5/opengl` | [ps5-opengl](https://github.com/darkxex/ps5-opengl) SDK | 1.0.2 (SHA-256 pinned) |
 | `/opt/ps5/opengl-src` | ps5-opengl sources bundled with that SDK | same release |
 | system | Ubuntu 24.04, Clang/LLD 18, binutils, Python 3 | distribution packages |
 

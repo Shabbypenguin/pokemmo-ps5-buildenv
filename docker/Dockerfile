@@ -38,12 +38,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && ln -sf /usr/bin/llvm-readelf-18 /usr/local/bin/llvm-readelf
 
 # ---- native-app boilerplate + payload SDK v0.42 + static zlib ---------------------------------
-ARG BOILERPLATE_URL=https://github.com/blackbearreloaded/ps5-native-app-boilerplate.git
+# The boilerplate's upstream (github.com/blackbearreloaded/ps5-native-app-boilerplate, GPL-3.0-or-later)
+# is gone. docker/mirror holds an unmodified git bundle of the pinned commit, taken from the last image
+# built from upstream; cloning it checks the commit, the SHA-256 checks the file.
 ARG BOILERPLATE_COMMIT=4f531c4b517f80bcb6b1267135848168d2250047
+ARG BOILERPLATE_BUNDLE_SHA256=c70627e696143ef0a3de3444911f2aaa7f83d58578079f01be555c4170334bc2
+COPY docker/mirror/ps5-native-app-boilerplate-4f531c4.bundle /tmp/boilerplate.bundle
 # zlib is pre-seeded from its GitHub release (byte-identical to zlib.net's, which is
 # often unreachable); the boilerplate script still verifies the SHA-256 itself.
-RUN git clone --quiet "$BOILERPLATE_URL" /opt/ps5/boilerplate \
+RUN echo "${BOILERPLATE_BUNDLE_SHA256}  /tmp/boilerplate.bundle" | sha256sum --check --strict \
+    && git clone --quiet /tmp/boilerplate.bundle /opt/ps5/boilerplate \
     && git -C /opt/ps5/boilerplate checkout --quiet "$BOILERPLATE_COMMIT" \
+    && rm -f /tmp/boilerplate.bundle \
     && mkdir -p /opt/ps5/boilerplate/.deps/native/zlib \
     && curl -fsSL -o /opt/ps5/boilerplate/.deps/native/zlib/zlib-1.3.2.tar.gz \
         https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz \
@@ -55,10 +61,11 @@ RUN git clone --quiet "$BOILERPLATE_URL" /opt/ps5/boilerplate \
 RUN make -C /opt/ps5/boilerplate --no-print-directory libc USE_CCACHE=0
 
 # ---- ps5-opengl prebuilt SDK -------------------------------------------------------------------
-ARG PS5_OPENGL_VERSION=1.0.1
-ARG PS5_OPENGL_SHA256=aaa2e8957f55e1fc0b654dcb35a36e585f7e635d63952da40a28be7f64fde741
+# Upstream moved from blackbearreloaded to darkxex; only 1.0.2 is published there.
+ARG PS5_OPENGL_VERSION=1.0.2
+ARG PS5_OPENGL_SHA256=30d8e51dd062739b629346102be5932728ba714bc50b1bdcdf08306c8843d9a4
 RUN cd /tmp \
-    && curl -fsSLO "https://github.com/blackbearreloaded/ps5-opengl/releases/download/v${PS5_OPENGL_VERSION}/ps5-opengl-sdk-${PS5_OPENGL_VERSION}.tar.gz" \
+    && curl -fsSLO "https://github.com/darkxex/ps5-opengl/releases/download/v${PS5_OPENGL_VERSION}/ps5-opengl-sdk-${PS5_OPENGL_VERSION}.tar.gz" \
     && echo "${PS5_OPENGL_SHA256}  ps5-opengl-sdk-${PS5_OPENGL_VERSION}.tar.gz" | sha256sum --check --strict \
     && tar -xzf "ps5-opengl-sdk-${PS5_OPENGL_VERSION}.tar.gz" \
     && mv "ps5-opengl-sdk-${PS5_OPENGL_VERSION}" /opt/ps5/opengl-bundle \

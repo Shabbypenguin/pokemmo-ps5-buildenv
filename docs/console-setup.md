@@ -1,7 +1,7 @@
 # Console setup
 
 The titles this project builds are **folder titles** in the format
-[ps5-native-app-boilerplate](https://github.com/blackbearreloaded/ps5-native-app-boilerplate) produces: a
+ps5-native-app-boilerplate (BlackBearReloaded; mirrored in `docker/mirror/`) produces: a
 fake-signed `eboot.bin`, a clean-room `sce_module/libc.prx` and `sce_sys/param.json`. The console needs a homebrew
 environment that can mount and launch such titles. This repository does not jailbreak or configure consoles; follow
 each project's own documentation for that.
